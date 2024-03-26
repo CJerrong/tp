@@ -15,8 +15,8 @@ import scrolls.elder.model.person.UniquePersonList;
  */
 public class AddressBook implements ReadOnlyAddressBook {
 
-    private int globalId;
-    private final UniquePersonList persons;
+    protected int globalId;
+    protected final UniquePersonList persons;
 
     /*
      * The 'unusual' code block below is a non-static initialization block, sometimes used to avoid duplication
@@ -103,6 +103,27 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void removePerson(Person key) {
         persons.remove(key);
     }
+
+    public boolean canUndoAddressBook() {
+        return false;
+    }
+
+    public boolean canRedoAddressBook() {
+        return false;
+    }
+
+    public void commitAddressBook() throws IllegalStateException {
+        throw new IllegalStateException("You cannot commit an address book from a regular addressBook");
+    }
+
+    public void undoAddressBook() throws IllegalStateException {
+        throw new IllegalStateException("You cannot execute an undo command from a regular addressBook");
+    }
+
+    public void redoAddressBook() throws  IllegalStateException {
+        throw new IllegalStateException("You cannot execute a redo command from a regular addressBook");
+    }
+
 
     //// util methods
 
