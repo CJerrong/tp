@@ -106,6 +106,17 @@ public class VersionedAddressBook extends AddressBook {
         this.purgeAddressBooks();
     }
 
+    @Override
+    public void resetAddressBook(ReadOnlyAddressBook newData) {
+        requireNonNull(newData);
+
+        this.globalId = newData.getGlobalId();
+        setPersons(newData.getPersonList());
+
+        this.commitAddressBook();
+        this.purgeAddressBooks();
+    }
+
     public void purgeAddressBooks() {
         // Call this method each time an operation is done that invalidates previous redo states
         for (int i = addressBookListPointer + 1; i < addressBooks.size(); i++) {

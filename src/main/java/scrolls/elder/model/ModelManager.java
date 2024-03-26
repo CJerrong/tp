@@ -33,7 +33,7 @@ public class ModelManager implements Model {
 
         logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
 
-        this.addressBook = new AddressBook(addressBook);
+        this.addressBook = new VersionedAddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
 
@@ -85,7 +85,7 @@ public class ModelManager implements Model {
 
     @Override
     public void setAddressBook(ReadOnlyAddressBook addressBook) {
-        this.addressBook.resetData(addressBook);
+        this.addressBook.resetAddressBook(addressBook);
     }
 
     @Override
@@ -115,6 +115,26 @@ public class ModelManager implements Model {
         CollectionUtil.requireAllNonNull(target, editedPerson);
 
         addressBook.setPerson(target, editedPerson);
+    }
+
+    @Override
+    public void undoAddressBook() throws IllegalStateException {
+        if (!addressBook.canUndoAddressBook()) {
+            throw new IllegalStateException("Undo command cannot be carried out as there is no previous state"
+                    + "of the address book");
+        }
+
+        addressBook.undoAddressBook();
+    }
+
+    @Override
+    public void redoAddressBook() throws IllegalStateException {
+        if (!addressBook.canRedoAddressBook()) {
+            throw new IllegalStateException("Redo command cannot be carried out as there is no next state"
+                    + "of the address book");
+        }
+
+        addressBook.redoAddressBook();
     }
 
     //=========== Filtered Person List Accessors =============================================================

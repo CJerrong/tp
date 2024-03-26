@@ -66,6 +66,16 @@ public class AddressBook implements ReadOnlyAddressBook {
         setPersons(newData.getPersonList());
     }
 
+    /**
+     * Resets the address book of this {@code AddressBook} with {@code newData}.
+     */
+    public void resetAddressBook(ReadOnlyAddressBook newData) {
+        requireNonNull(newData);
+
+        this.globalId = newData.getGlobalId();
+        setPersons(newData.getPersonList());
+    }
+
     //// person-level operations
 
     /**
